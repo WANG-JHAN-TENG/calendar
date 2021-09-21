@@ -18,7 +18,7 @@
         class="date-block"
         v-for="(date, index) in dates"
         :key="index"
-        @click="newPanel(index)"
+        @click="newPanel(index,$event)"
       >
         <div class="date">{{ date + 1 }}</div>
         <div class="events">
@@ -26,7 +26,7 @@
               class="event"
               v-for="(event, index) in events"
               :key="index"
-              @click.stop="updatePanel(index)"
+              @click.stop="updatePanel(index,$event)"
             >
               <template v-if="event.date == date">
                 <div class="title">{{ event.title }}</div>
@@ -45,6 +45,7 @@
   <div
     id="info-panel"
     v-bind:class="{ open: opened, new: isNew, update: updated }"
+       :style="{top:topPosition+ 'px', left:leftPosition + 'px'}"
   >
     <div class="close" @click="close">x</div>
 
@@ -116,6 +117,8 @@ export default {
       opened: false,
       isNew: false,
       updated: false,
+      topPosition:null,
+      leftPosition:null,
       eventId: null,
       events: [],
       oneEvent: {
@@ -130,7 +133,7 @@ export default {
     };
   },
   methods: {
-    newPanel(index) {
+    newPanel(index,event) {
       this.opened = true;
       this.isNew = true;
       this.eventId = index;
@@ -143,9 +146,13 @@ export default {
         end_time: null,
         description: null,
       };
-      this.$refs.title.focus();
+      this.topPosition = event.pageY ,
+      this.leftPosition = event.pageX ,
+      this.$nextTick(() => {
+        this.$refs.title.focus();
+      });
     },
-    updatePanel(index) {
+    updatePanel(index,event) {
       this.opened = true;
       this.updated = true;
       this.isNew = false;
@@ -158,7 +165,11 @@ export default {
         end_time: this.cloneEvent.end_time,
         description: this.cloneEvent.description,
       };
-      this.$refs.title.focus();
+      this.topPosition = event.pageY ,
+      this.leftPosition = event.pageX ,
+      this.$nextTick(() => {
+        this.$refs.title.focus();
+      });
     },
     close() {
       this.opened = false;
@@ -174,7 +185,7 @@ export default {
       this.close();
     },
     deleteE() {
-      this.events.splice(1, this.eventsId);
+      this.events.splice(this.eventsId, 1);
       this.close();
     },
   },
@@ -247,7 +258,7 @@ export default {
 /* info-panel */
 #info-panel {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 25%;
   right: 37%;
   width: 25vw;
