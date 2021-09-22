@@ -275,7 +275,7 @@ export default {
   right: 37%;
   width: 20vw;
   background: white;
-  border: 1px solid #ccc;
+  border: none;
 }
 
 #info-panel.open {
@@ -283,10 +283,15 @@ export default {
 }
 
 #info-panel .close {
+  padding:3px 10px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  right: 0;
   cursor: pointer;
+}
+
+#info-panel .close:hover{
+  background: rgba(248, 0, 0, 0.637);
+  color: white;
 }
 
 #info-panel label {
