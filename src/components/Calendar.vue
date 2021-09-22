@@ -146,7 +146,6 @@ export default {
         end_time: null,
         description: null,
       };
-      console.log(event);
       if(event.pageY > 364 && event.pageX > 830){
         this.topPosition = 364;
         this.leftPosition = 830;
@@ -177,8 +176,19 @@ export default {
         end_time: this.cloneEvent.end_time,
         description: this.cloneEvent.description,
       };
-      this.topPosition = event.pageY ,
-      this.leftPosition = event.pageX ,
+      if(event.pageY > 325 && event.pageX > 830){
+        this.topPosition = 325;
+        this.leftPosition = 830;
+      }else if(event.pageX > 830){
+        this.topPosition = event.pageY;
+        this.leftPosition = 830;
+      }else if( event.pageY > 325){
+        this.topPosition = 325;
+        this.leftPosition = event.pageX;
+      }else{
+        this.topPosition = event.pageY ;
+        this.leftPosition = event.pageX ;
+      }
       this.$nextTick(() => {
         this.$refs.title.focus();
       });
