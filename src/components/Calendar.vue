@@ -146,8 +146,20 @@ export default {
         end_time: null,
         description: null,
       };
-      this.topPosition = event.pageY ,
-      this.leftPosition = event.pageX ,
+      console.log(event);
+      if(event.pageY > 364 && event.pageX > 830){
+        this.topPosition = 364;
+        this.leftPosition = 830;
+      }else if(event.pageX > 830){
+        this.topPosition = event.pageY;
+        this.leftPosition = 830;
+      }else if( event.pageY > 364){
+        this.topPosition = 364;
+        this.leftPosition = event.pageX;
+      }else{
+        this.topPosition = event.pageY ;
+        this.leftPosition = event.pageX ;
+      }
       this.$nextTick(() => {
         this.$refs.title.focus();
       });
@@ -258,10 +270,10 @@ export default {
 /* info-panel */
 #info-panel {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 25%;
   right: 37%;
-  width: 25vw;
+  width: 20vw;
   background: white;
   border: 1px solid #ccc;
 }
@@ -287,6 +299,10 @@ export default {
   border-bottom: 1px solid #ccc;
 }
 
+#info-panel .title input{
+  width: 18vw;
+}
+
 #info-panel .title,
 #info-panel .time-picker,
 #info-panel .description {
@@ -300,6 +316,10 @@ export default {
 
 #description {
   width: 100%;
+}
+
+#info-panel .from,.to{
+  margin-left: 10px;
 }
 
 #info-panel button {
