@@ -132,6 +132,7 @@ export default {
       eventsId: null,
     };
   },
+  computed:{},
   methods: {
     newPanel(index,event) {
       this.opened = true;
@@ -232,9 +233,22 @@ export default {
   flex-wrap: wrap;
 }
 
+#days div:nth-child(1),
+#days div:nth-child(7){
+  color: red;
+}
+
 #dates {
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+}
+
+#dates div:nth-child(7n),
+#dates div:nth-child(8),
+#dates div:nth-child(15),
+#dates div:nth-child(22),
+#dates div:nth-child(29){
+  color: red;
 }
 
 .day,
