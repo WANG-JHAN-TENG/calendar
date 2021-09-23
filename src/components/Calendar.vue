@@ -20,7 +20,7 @@
         :key="index"
         @click="newPanel(index,$event)"
       >
-        <div class="date">{{ date + 1 }}</div>
+        <div class="date">{{ date }}</div>
         <div class="events">
             <div
               class="event"
@@ -28,7 +28,7 @@
               :key="index"
               @click.stop="updatePanel(index,$event)"
             >
-              <template v-if="event.date == date">
+              <template v-if="event.date == date-1">
                 <div class="title">{{ event.title }}</div>
                 <div class="from">{{ event.start_time }}</div>
               </template>
@@ -49,51 +49,49 @@
   >
     <div class="close" @click="close">x</div>
 
-    <form>
-      <div class="title">
-        <label for="">Event</label>
-        <br />
-        <input type="text" name="title" ref="title" v-model="oneEvent.title" />
+    <div class="title">
+      <label for="">Event</label>
+      <br />
+      <input type="text" name="title" ref="title" v-model="oneEvent.title" />
+    </div>
+    <div class="time-picker">
+      <div class="selected-date">
+        <span class="month">9</span>
+        /
+        <span class="date">{{ eventId + 1 }}</span>
+        <input type="hidden" name="month" />
+        <input type="hidden" name="date" />
       </div>
-      <div class="time-picker">
-        <div class="selected-date">
-          <span class="month">9</span>
-          /
-          <span class="date">{{ eventId + 1 }}</span>
-          <input type="hidden" name="month" />
-          <input type="hidden" name="date" />
-        </div>
-      </div>
-      <div class="from">
-        <label for="from">From</label>
-        <br />
-        <input
-          id="from"
-          type="time"
-          name="start_time"
-          v-model="oneEvent.start_time"
-        />
-      </div>
-      <div class="to">
-        <label for="to">To</label>
-        <br />
-        <input
-          id="to"
-          type="time"
-          name="end_time"
-          v-model="oneEvent.end_time"
-        />
-      </div>
-      <div class="description">
-        <label for="description">Description</label>
-        <br />
-        <textarea
-          name="description"
-          id="description"
-          v-model="oneEvent.description"
-        ></textarea>
-      </div>
-    </form>
+    </div>
+    <div class="from">
+      <label for="from">From</label>
+      <br />
+      <input
+        id="from"
+        type="time"
+        name="start_time"
+        v-model="oneEvent.start_time"
+      />
+    </div>
+    <div class="to">
+      <label for="to">To</label>
+      <br />
+      <input
+        id="to"
+        type="time"
+        name="end_time"
+        v-model="oneEvent.end_time"
+      />
+    </div>
+    <div class="description">
+      <label for="description">Description</label>
+      <br />
+      <textarea
+        name="description"
+        id="description"
+        v-model="oneEvent.description"
+      ></textarea>
+    </div>
 
     <div class="buttons clearfix">
       <button class="create" @click="create">Create</button>
@@ -110,10 +108,7 @@ export default {
   props: {},
   data() {
     return {
-      dates: [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-        20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-      ],
+      dates: 30,
       opened: false,
       isNew: false,
       updated: false,
@@ -169,14 +164,7 @@ export default {
       this.updated = true;
       this.isNew = false;
       this.eventsId = index;
-      this.cloneEvent = Object.assign({},this.events[index]);
-      this.oneEvent = {
-        title: this.cloneEvent.title,
-        date:this.cloneEvent.date,
-        start_time: this.cloneEvent.start_time,
-        end_time: this.cloneEvent.end_time,
-        description: this.cloneEvent.description,
-      };
+      this.oneEvent = Object.assign({},this.events[index]);
       if(event.pageY > 325 && event.pageX > 830){
         this.topPosition = 325;
         this.leftPosition = 830;
@@ -384,5 +372,36 @@ export default {
 #info-panel.update button.update {
   background: #74be00;
 }
+
+/* @media(max-width:380px){
+  #days{
+    font-size: 0.8rem;
+  }
+  .date-block{
+    height: 12vh;
+  }
+  #info-panel{
+    width: 90%;
+    top: 150px !important;
+    left: 10px !important;
+  }
+  #info-panel 
+  .title input,
+  .from input,
+  .to input,
+  .description textarea{
+    width: 95%;
+  }
+  #header{
+    margin-top: 70px;
+    margin-bottom: 10px;
+  }
+  .events{
+    font-size: 0.1rem;
+  }
+  .from{
+    display: none;
+  }
+} */
 </style>
 
