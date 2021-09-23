@@ -392,7 +392,7 @@ export default {
   background: #74be00;
 }
 
-@media(max-width:380px){
+@media(max-width:750px){
   #header{
   margin-top: 70px;
   margin-bottom: 10px;
