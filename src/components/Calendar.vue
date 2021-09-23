@@ -10,34 +10,41 @@
       <div class="day">FRI</div>
       <div class="day">SAT</div>
     </div>
-    <div id="dates">
-      <div class="date-block empty"></div>
-      <div class="date-block empty"></div>
-      <div class="date-block empty"></div>
-      <div
-        class="date-block"
-        v-for="(date, index) in dates"
-        :key="index"
-        @click="newPanel(index,$event)"
-      >
-        <div class="date">{{ date }}</div>
-        <div class="events">
-            <div
-              class="event"
-              v-for="(event, index) in events"
-              :key="index"
-              @click.stop="updatePanel(index,$event)"
-            >
-              <template v-if="event.date == date-1">
-                <div class="title">{{ event.title }}</div>
-                <div class="from">{{ event.start_time }}</div>
-              </template>
-            </div>
+    <div id="tables">
+      <div id="weeks">
+        <div class="week" v-for="n in sevenDays" :key="n.id">
+          {{n}}
         </div>
       </div>
+      <div id="dates">
+        <div class="date-block empty"></div>
+        <div class="date-block empty"></div>
+        <div class="date-block empty"></div>
+        <div
+          class="date-block"
+          v-for="(date, index) in dates"
+          :key="index"
+          @click="newPanel(index,$event)"
+        >
+          <div class="date">{{ date }}</div>
+          <div class="events">
+              <div
+                class="event"
+                v-for="(event, index) in events"
+                :key="index"
+                @click.stop="updatePanel(index,$event)"
+              >
+                <template v-if="event.date == date-1">
+                  <div class="title">{{ event.title }}</div>
+                  <div class="from">{{ event.start_time }}</div>
+                </template>
+              </div>
+          </div>
+        </div>
 
-      <div class="date-block empty"></div>
-      <div class="date-block empty"></div>
+        <div class="date-block empty"></div>
+        <div class="date-block empty"></div>
+      </div>
     </div>
 
   </div>
@@ -109,6 +116,13 @@ export default {
   data() {
     return {
       dates: 30,
+      sevenDays:[
+        'WED','TUR','FRI','SAT',
+        'SUN','MON','TUE','WED','TUR','FRI','SAT',
+        'SUN','MON','TUE','WED','TUR','FRI','SAT',
+        'SUN','MON','TUE','WED','TUR','FRI','SAT',
+        'SUN','MON','TUE','WED','TUR'
+      ],
       opened: false,
       isNew: false,
       updated: false,
@@ -215,6 +229,10 @@ export default {
   font-weight: bold;
 }
 
+#weeks{
+  display: none;
+}
+
 #days,
 #dates {
   display: flex;
@@ -249,6 +267,7 @@ export default {
   border-left: 1px solid #ccc;
   height: 15vh;
   padding: 4px;
+  overflow: auto;
 }
 
 .date-block:hover{
@@ -282,7 +301,7 @@ export default {
 /* info-panel */
 #info-panel {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 25%;
   right: 37%;
   width: 20vw;
@@ -373,17 +392,50 @@ export default {
   background: #74be00;
 }
 
-/* @media(max-width:380px){
+@media(max-width:380px){
+  #header{
+  margin-top: 70px;
+  margin-bottom: 10px;
+  }
   #days{
     font-size: 0.8rem;
   }
-  .date-block{
+  #days .day{
+  display: none;
+  }
+  #tables{
+    display: flex;
+  }
+  #weeks{
+    display: flex;
+    flex-direction: column;
+  }
+  #weeks .week{
+    padding-top: 7px;
     height: 12vh;
+    font-size: 0.7rem;
+  }
+  #weeks div:nth-child(7n-3),
+  #weeks div:nth-child(5),
+  #weeks div:nth-child(12),
+  #weeks div:nth-child(19),
+  #weeks div:nth-child(26){
+    color: red;
+  }
+  #dates .date-block{
+    height: 12vh;
+    flex: 0 0 100%;
+  }
+  #dates .events{
+    font-size: 0.1rem;
+  }
+  #dates .date-block.empty{
+    display: none;
   }
   #info-panel{
-    width: 90%;
-    top: 150px !important;
-    left: 10px !important;
+  width: 90%;
+  top: 150px !important;
+  left: 10px !important;
   }
   #info-panel 
   .title input,
@@ -392,16 +444,6 @@ export default {
   .description textarea{
     width: 95%;
   }
-  #header{
-    margin-top: 70px;
-    margin-bottom: 10px;
-  }
-  .events{
-    font-size: 0.1rem;
-  }
-  .from{
-    display: none;
-  }
-} */
+}
 </style>
 
